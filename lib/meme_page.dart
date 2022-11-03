@@ -5,11 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:galleryimage/galleryimage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MemeGalleryContent extends StatelessWidget {
-  MemeGalleryContent({
+class MemeGalleryContent extends StatefulWidget {
+  const MemeGalleryContent({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<MemeGalleryContent> createState() => _MemeGalleryContentState();
+}
+
+var title = 'Moja tablica';
+var index = 1;
+
+class _MemeGalleryContentState extends State<MemeGalleryContent> {
   List<String> urlList = [
     "https://dl.airtable.com/.attachments/501f629f41b716ce726d14e9c88f479c/dc0a51d5/16597215275460.jpg",
     "https://dl.airtable.com/.attachments/25134d4a611a7dcfc93998f09db73b4a/f5b90cbb/ov7mtowoSv6fomRH.jpg",
@@ -37,6 +45,26 @@ class MemeGalleryContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (index == 0) {
+      setState(() {
+        title = 'Meme Stack';
+      });
+    }
+    if (index == 1) {
+      setState(() {
+        title = 'Moja tablica';
+      });
+    }
+    if (index == 2) {
+      setState(() {
+        title = 'Wiadomości';
+      });
+    }
+    if (index == 3) {
+      setState(() {
+        title = 'Profil';
+      });
+    }
     return Container(
       decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -51,14 +79,14 @@ class MemeGalleryContent extends StatelessWidget {
             children: [
               const SizedBox(width: 10),
               Text(
-                'Moja tablica',
+                title,
                 style: GoogleFonts.montserrat(fontSize: 25),
               ),
               const SizedBox(width: 90),
               ShaderMask(
                   shaderCallback: (bounds) => const LinearGradient(
                           begin: Alignment.bottomRight,
-                          end: Alignment.topLeft,
+                          end: Alignment.centerLeft,
                           colors: [Colors.orange, Colors.purple])
                       .createShader(bounds),
                   child: const Icon(CupertinoIcons.arrowshape_turn_up_right,
@@ -67,25 +95,74 @@ class MemeGalleryContent extends StatelessWidget {
               ShaderMask(
                   shaderCallback: (bounds) => const LinearGradient(
                           begin: Alignment.bottomRight,
-                          end: Alignment.topLeft,
+                          end: Alignment.centerLeft,
                           colors: [Colors.orange, Colors.purple])
                       .createShader(bounds),
                   child: const Icon(CupertinoIcons.delete, size: 30)),
             ],
           ),
         ),
-        body: GalleryImage(
-          imageUrls: urlList,
-          numOfShowImages: urlList.length,
-          key: key,
-          titleGallery: 'Galeria',
-        ),
+        body: Builder(builder: (context) {
+          if (index == 0) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text(
+                    'Meme stack',
+                    style: TextStyle(color: Colors.white),
+                  )
+                ],
+              ),
+            );
+          }
+          if (index == 1) {
+            return Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: GalleryImage(
+                imageUrls: urlList,
+                numOfShowImages: urlList.length,
+                titleGallery: 'Galeria',
+              ),
+            );
+          }
+          if (index == 2) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text(
+                    'Wiadomości',
+                    style: TextStyle(color: Colors.white),
+                  )
+                ],
+              ),
+            );
+          }
+
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  'Profil',
+                  style: TextStyle(color: Colors.white),
+                )
+              ],
+            ),
+          );
+        }),
         bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
-            currentIndex: 1,
+            currentIndex: index,
             selectedItemColor: Colors.amber,
             unselectedItemColor: Colors.white,
             backgroundColor: Colors.transparent,
+            onTap: (newIndex) {
+              setState(() {
+                index = newIndex;
+              });
+            },
             items: const [
               BottomNavigationBarItem(
                   icon: Icon(

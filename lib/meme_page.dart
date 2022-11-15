@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:galleryimage/galleryimage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -118,13 +119,22 @@ class _MemeGalleryContentState extends State<MemeGalleryContent> {
           }
           if (index == 1) {
             return Padding(
-              padding: const EdgeInsets.all(3.0),
-              child: GalleryImage(
-                imageUrls: urlList,
-                numOfShowImages: urlList.length,
-                titleGallery: 'Galeria',
-              ),
-            );
+                padding: const EdgeInsets.all(3.0),
+                child: MasonryGridView.builder(
+                    crossAxisSpacing: 7,
+                    mainAxisSpacing: 7,
+                    gridDelegate:
+                        const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2),
+                    itemBuilder: (context, index) {
+                      return Image.network(urlList[index]);
+                    })
+                // child: GalleryImage(
+                //   imageUrls: urlList,
+                //   numOfShowImages: urlList.length,
+                //   titleGallery: 'Galeria',
+                // ),
+                );
           }
           if (index == 2) {
             return Center(
